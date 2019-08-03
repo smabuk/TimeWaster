@@ -44,7 +44,7 @@ namespace TimeWaster.Server
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swaggere/v1/swagger.json", "Time Waster API");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time Waster API");
             });
             app.UseRouting();
 
