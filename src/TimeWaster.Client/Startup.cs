@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Smab.DiceAndTiles;
 
 namespace TimeWaster.Client
 {
@@ -7,6 +8,7 @@ namespace TimeWaster.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
+			services.AddTransient<IBoggleDice, BoggleDice>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)
