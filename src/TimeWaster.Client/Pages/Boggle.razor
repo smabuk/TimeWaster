@@ -1,8 +1,7 @@
 ﻿@page "/boggle"
 @page "/boggle/{boggleType}"
 @page "/boggle/{boggleType}/{noOfPlayers:int}"
-@using Smab.DiceAndTiles
-@*@inject BoggleDice boggleDice*@
+@inherits BoggleBase
 <h3>Boggle</h3>
 
 <div class="">
@@ -37,7 +36,7 @@
                             <tr class="cell">
                                 @for (int col = BoardSize - 1; col >= 0; col--)
                                 {
-                                    var die = BoggleSet.Board[row + (col * BoggleSet.BoardSize)];
+                                    var die = BoggleSet.Board[row + (col * BoardSize)];
                                     string showorientation = ("MNWZ".Contains(die.FaceValue.Display)) ? "ShowOrientation" : "";
                                     string dieClass = $"rot-reverse-{die.Orientation}";
                                     <td class="d-table-cell">
@@ -63,113 +62,70 @@ Debug: No of dice = @BoggleSet.NoOfDiceOnBoard
 </pre>
 
 <style>
-
-        .board {
-            background-color: orange;
-            width: @(BoardSize + (BoardSize * (DieSize / 2)))rem;
-            height: @(BoardSize + (BoardSize * (DieSize / 2)))rem;
-        }
-        .slot {
-            width: @(DieSize / 2)rem;
-            height: @(DieSize / 2)rem;
-            border: thin solid;
-            display: inline-block;
-            margin: 3px;
-        }
-        .die {
-            display: flex;
-            justify-content: center;
-            align-content: center;
-            font-size: @(DieFontSize / 2)rem;
-            font-weight: bold;
-        }
-
-        @@media (min-width: 768px) {
-            .board {
-                width: @(BoardSize + (BoardSize * DieSize))rem;
-                height: @(BoardSize + (BoardSize * DieSize))rem;
-            }
-            .slot {
-                width: @(DieSize)rem;
-                height: @(DieSize)rem;
-            }
-            .die {
-                font-size: @(DieFontSize)rem;
-            }
-        }
-
-
-
-        .ShowOrientation {
-            text-decoration: underline;
-            text-decoration: underline dashed #808080;
-        }
-
-        .rot0 {
-            transform: rotate(0deg);
-        }
-        .rot90 {
-            transform: rotate(90deg);
-        }
-        .rot180 {
-            transform: rotate(180deg);
-        }
-        .rot270 {
-            transform: rotate(270deg);
-        }
-
-        .rot-reverse-0 {
-            transform: rotate(180deg);
-        }
-        .rot-reverse-90 {
-            transform: rotate(270deg);
-        }
-        .rot-reverse-180 {
-            transform: rotate(0deg);
-        }
-        .rot-reverse-270 {
-            transform: rotate(90deg);
-        }
-</style>
-
-@code {
-    [Parameter] public string BoggleType { get; set; }
-    [Parameter] public int NoOfPlayers { get; set; }
-
-    public BoggleDice BoggleSet { get; set; }
-    public BoggleDice.BoggleType BoggleSetType
-        => BoggleType switch
-        {
-            "classic" => BoggleDice.BoggleType.Classic4x4,
-            "deluxe" => BoggleDice.BoggleType.BigBoggleDeluxe,
-            "superbig" => BoggleDice.BoggleType.SuperBigBoggle2012,
-            _ => BoggleDice.BoggleType.Classic4x4
-        };
-
-    private int BoardSize => BoggleSet.BoardSize;
-    private readonly double DieSize = 8;
-    private readonly double DieFontSize = 4.8;
-
-
-    protected override void OnInitialized()
-    {
-        // Provide defaults for optional parameters
-        NoOfPlayers = NoOfPlayers switch
-        {
-            0 => 1,
-            { } => NoOfPlayers
-        };
-        BoggleType = BoggleType ?? "classic";
-
-        // Initialisze the Boggle board
-        BoggleSet = new BoggleDice(BoggleSetType);
-        BoggleSet.ShakeAndFillBoard();
-
-    }
-
-    protected void Shake()
-    {
-        BoggleSet.ShakeAndFillBoard();
-    }
-
+.board {
+    background-color: orange;
+    width: @(BoardSize + (BoardSize * (DieSize / 2)))rem;
+    height: @(BoardSize + (BoardSize * (DieSize / 2)))rem;
 }
+.slot {
+    width: @(DieSize / 2)rem;
+    height: @(DieSize / 2)rem;
+    border: thin solid;
+    display: inline-block;
+    margin: 3px;
+}
+.die {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-size: @(DieFontSize / 2)rem;
+    font-weight: bold;
+}
+
+@@media (min-width: 768px) {
+    .board {
+        width: @(BoardSize + (BoardSize * DieSize))rem;
+        height: @(BoardSize + (BoardSize * DieSize))rem;
+    }
+    .slot {
+        width: @(DieSize)rem;
+        height: @(DieSize)rem;
+    }
+    .die {
+        font-size: @(DieFontSize)rem;
+    }
+}
+
+
+
+.ShowOrientation {
+    text-decoration: underline;
+    text-decoration: underline dashed #808080;
+}
+
+.rot0 {
+    transform: rotate(0deg);
+}
+.rot90 {
+    transform: rotate(90deg);
+}
+.rot180 {
+    transform: rotate(180deg);
+}
+.rot270 {
+    transform: rotate(270deg);
+}
+
+.rot-reverse-0 {
+    transform: rotate(180deg);
+}
+.rot-reverse-90 {
+    transform: rotate(270deg);
+}
+.rot-reverse-180 {
+    transform: rotate(0deg);
+}
+.rot-reverse-270 {
+    transform: rotate(90deg);
+}
+</style>
